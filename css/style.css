@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap');
+
+/*********** VARIABLES *************/
+
+:root {
+   --green-color: #5bf870;
+   --green-bg: #05321e;
+   --dark: #111;
+   --term: '> ';
+}
+
+.theme-green {
+   --color: var(--green-color);
+   --bg: var(--dark);
+}
+
+/*********** GENERIC STUFF *************/
+html {
+   font-size: 12px;
+   box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+   box-sizing: inherit;
+}
+
+body {
+   background: #111;
+   margin: 0;
+   overflow: hidden;
+   font-family: sans-serif;
+}
+
+a {
+   outline: none;
+}
+
+/*********** INPUT / OUTPUT *************/
+
+#prompt {
+   display: none;
+}
+[contenteditable] {
+   caret-color: transparent; /** This hides the default browser caret */
+   outline: none;
+}
+#input {
+   position: relative;
+   display: block;
+   white-space: pre-wrap;
+}
+#input:before {
+   content: var(--term);
+}
+#input[contenteditable='true']:after,
+.typer.active:after {
+   content: '■';
+   animation: cursor 1s infinite;
+   animation-timing-function: step-end;
+   margin-left: 1px;
+   line-height: 1rem;
+}
+#input.password .char {
+   display: none;
+}
+#input.password:after {
+   color: var(--color);
+}
+#input.password:before {
+   color: var(--color);
+   content: var(--term) attr(data-pw);
+}
+.typer {
+   word-break: break-all;
+}
+
+/*********** PARTS OF THE SCREEN *************/
+#crt,
+pre {
+   font-family: 'VT323', monospace;
+}
+#crt {
+   width: 80ch; /* This makes 80 monospace characters fit on the screen */
+   height: calc(80ch * 0.8);
+   font-size: max(1rem, 2.2vmin); /* Scale the font-size relative to the minimum screen dimension */
+   position: relative;
+   background: var(--bg);
+   background-image: radial-gradient(ellipse, var(--bg) 0%, var(--off) 90%);
+   animation: on 2s linear;
+   transition: all 0.5s;
+}
+#crt:after {
+   content: ' ';
+   opacity: 0;
+   background: #fff;
+   display: block;
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   width: 100%;
+   height: 100%;
+   pointer-events: none;
+   z-index: 3;
+}
+#crt:not(.off):before {
+   content: ' ';
+   display: block;
+   position: absolute;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   background: linear-gradient(to bottom, rgba(18, 16, 16, 0.1) 50%, rgba(0, 0, 0, 0.25) 50%);
+   background-size: 100% 8px;
+   z-index: 2;
+   pointer-events: none;
+   animation: fadeIn 2s;
+}
+
+body.fullscreen #crt {
+   font-size: 2.5rem;
+   position: fixed;
+   width: 100%;
+   left: 0;
+   top: 0;
+   z-index: 999;
+}
+
+.fullscreen {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   width: 100%;
+   height: 100%;
+   overflow: hidden;
+}
+
+.terminal {
+   position: relative;
+   height: 100%;
+   padding: 2rem;
+   overflow-y: auto;
+   overflow-x: hidden;
+   word-break: break-word;
+   text-transform: uppercase;
+   animation: textShadow 4s infinite;
+}
+
+.terminal,
+.fullscreen {
+   color: var(--color);
+   text-shadow: 0 0 5px #c8c8c8;
+}
+
+::selection {
+   background: var(--color);
+   color: var(--bg);
+   text-shadow: none;
+}
+
+/*********** RANDOM OTHER STUFF *************/
+
+.access-granted {
+   animation: flicker 2s infinite;
+   position: fixed;
+   text-align: center;
+   background: var(--bg);
+   border: 2px solid var(--color);
+   padding: 10px 30px;
+   left: 50%;
+   top: 40%;
+   transform: translateX(-50%);
+   z-index: 999;
+}
+
+/*********** MEDIA QUERIES *************/
+
+/* For really small screens, only show fullscreen mode */
+@media only screen and (max-width: 425px), (max-height: 425px) {
+   #crt {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+   }
+}
