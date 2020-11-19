@@ -16,7 +16,7 @@ I was thinking about building a game with this some day but for now you can get 
 
 ---
 
-### Help command...
+### Help command showing typical circa 1980 commands...
 
 ![Help command](assets/help.png)
 
